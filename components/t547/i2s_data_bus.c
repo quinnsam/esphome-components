@@ -2,6 +2,9 @@
 
 #include <driver/periph_ctrl.h>
 #include <esp_heap_caps.h>
+#include <soc/io_mux_reg.h>
+#include <soc/gpio_sig_map.h>
+#include <rom/gpio.h>
 
 // #include <esp_idf_version.h>
 // #if ESP_IDF_VERSION_MAJOR >= 4
@@ -70,7 +73,6 @@ static void gpio_setup_out(int gpio, int sig, bool invert)
 {
     if (gpio == -1)
         return;
-    PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[gpio], PIN_FUNC_GPIO);
     gpio_set_direction(gpio, GPIO_MODE_DEF_OUTPUT);
     gpio_matrix_out(gpio, sig, invert, false);
 }
@@ -184,10 +186,12 @@ void i2s_bus_init(i2s_bus_config *cfg)
 
 //#if defined(CONFIG_EPD_DISPLAY_TYPE_ED097OC4_LQ)
     // Initialize Audio Clock (APLL) for 120 Mhz.
-    rtc_clk_apll_enable(1, 0, 0, 8, 0);
+    rtc_clk_apll_coeff_set(0, 0, 0, 8);
+    rtc_clk_apll_enable(true);
 //#else
     // Initialize Audio Clock (APLL) for 80 Mhz.
-// rtc_clk_apll_enable(1, 0, 0, 8, 1);
+//    rtc_clk_apll_coeff_set(1, 0, 0, 8);
+//    rtc_clk_apll_enable(true);
 //#endif
 
 

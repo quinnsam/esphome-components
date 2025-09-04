@@ -4,6 +4,7 @@
 
 #include <esp_timer.h>
 #include <xtensa/core-macros.h>
+#include "soc/gpio_struct.h"
 
 #include "i2s_data_bus.h"
 #include "rmt_pulse.h"
